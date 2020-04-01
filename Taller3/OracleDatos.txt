@@ -1,0 +1,2 @@
+SYS contraseña,SYSTEM contraseña,ContraseñaBD: Oracle123
+NombreBD: orcl2

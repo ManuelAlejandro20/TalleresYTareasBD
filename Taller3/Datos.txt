@@ -1,0 +1,136 @@
+create table empleado(
+	nombre varchar2(60) not null,
+    inic varchar2(1) not null,
+    apellido varchar2(60) not null,
+	nss number(9) not null,
+    fecha_ncto date not null,
+    direccion varchar2(60) not null,
+    sexo varchar2(1) not null,
+    salario number(30) not null,
+	nss_superv number(9),
+    nd number(2) not null,
+    PRIMARY KEY (nss)
+);
+    
+create table departamento(
+	nombred varchar2(60) not null,
+	numerod number(2) not null,
+    nss_jefe number(9) not null,
+    fecha_inic_jefe date not null,
+    PRIMARY KEY (numerod)
+);
+
+create table localizaciones_dept(
+	numerod number(2) not null,
+    localizaciond varchar2(60) not null,
+    primary key(numerod,localizaciond)
+);
+
+create table proyecto(
+	nombrep varchar2(60) not null,
+	numerop number(2) not null,
+    localizacionp varchar2(60) not null,
+    nd number(2) not null,
+    PRIMARY KEY (numerop)
+);
+
+create table trabaja_en(
+	nsse number(9) not null,
+	np number(2) not null,
+    horas float,
+    PRIMARY KEY (nsse,np)
+);
+
+create table dependiente(
+	nsse number(9) not null,
+	nombre_dependiente varchar2(60) not null,
+	sexo varchar2(1) not null,
+    fecha_ncto date not null,
+    parentesco varchar2(60) not null,
+    PRIMARY KEY (nsse, nombre_dependiente)
+);
+
+
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values 
+        ('John', 'B', 'Smith', 123456789, to_date('1965-01-09','yyyy-mm-dd'), '731 Fondren, Houston, TX', 'H', 30000, 333445555, 5);
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values 
+        ('Franklin', 'T', 'Wong', 333445555, to_date('1955-12-08','yyyy-mm-dd'), '633 Voss, Houston, TX', 'H', 40000, 888665555, 5);
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values 
+        ('Alicia', 'J', 'Zelaya', 999887777, to_date('1968-07-19','yyyy-mm-dd'), '3321 Castle, Spring, TX', 'M', 25000, 987654321, 4);
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values 
+        ('Jeniffer', 'S', 'Wallace', 987654321, to_date('1941-06-20','yyyy-mm-dd'), '291 Berry, Bellaire, TX', 'M', 43000, 888665555, 4);
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values 
+        ('Rarnesh', 'K', 'Narayan', 666884444, to_date('1962-09-15','yyyy-mm-dd'), '975 Fire Oak, Humble, TX', 'H', 38000, 333445555, 5);
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values     
+        ('Joyce', 'A', 'English', 453453453, to_date('1972-07-31','yyyy-mm-dd'), '5631 Rice, Houston, TX', 'M', 25000, 333445555, 5);
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values 
+        ('Ahmad', 'V', 'Jabbar', 987987987, to_date('1969-03-29','yyyy-mm-dd'), '980 Dallas, Houston, TX', 'H', 25000, 987654321, 4);
+insert into empleado(nombre, inic, apellido, nss, fecha_ncto, direccion, sexo, salario, nss_superv, nd) values 
+        ('James', 'E', 'Borg', 888665555, to_date('1937-11-10','yyyy-mm-dd'), '450 Stone, Houston, TX', 'H', 55000, null , 1);
+
+insert into departamento(nombred, numerod, nss_jefe, fecha_inic_jefe) values ('Investigacion',5,333445555,to_date('1988-05-22','yyyy-mm-dd'));
+insert into departamento(nombred, numerod, nss_jefe, fecha_inic_jefe) values ('Administracion',4,987654321,to_date('1995-01-01','yyyy-mm-dd'));
+insert into departamento(nombred, numerod, nss_jefe, fecha_inic_jefe) values ('Direccion',1, 888665555, to_date('1981-06-19','yyyy-mm-dd') );
+    
+insert into localizaciones_dept(numerod, localizaciond) values (1,'Houston');
+insert into localizaciones_dept(numerod, localizaciond) values (4,'Stafford');
+insert into localizaciones_dept(numerod, localizaciond) values (5,'Bellaire');
+insert into localizaciones_dept(numerod, localizaciond) values (5,'Sugarland');
+insert into localizaciones_dept(numerod, localizaciond) values (5,'Houston');
+
+insert into proyecto(nombrep, numerop, localizacionp, nd) values ('ProductoX', 1, 'Bellaire', 5);
+insert into proyecto(nombrep, numerop, localizacionp, nd) values ('ProductoY', 2, 'Sugarland', 5);
+insert into proyecto(nombrep, numerop, localizacionp, nd) values ('ProductoZ', 3, 'Houston', 5);
+insert into proyecto(nombrep, numerop, localizacionp, nd) values ('Automatizacion', 10, 'Stafford', 4);
+insert into proyecto(nombrep, numerop, localizacionp, nd) values ('Reorganizacion', 20, 'Houston', 1);
+insert into proyecto(nombrep, numerop, localizacionp, nd) values ('Nuevos beneficios', 30, 'Stafford', 4);
+
+    
+insert into trabaja_en(nsse, np, horas) values (123456789, 1, 32.5);
+insert into trabaja_en(nsse, np, horas) values (123456789, 2, 7.5);
+insert into trabaja_en(nsse, np, horas) values (666884444, 3, 40.0);
+insert into trabaja_en(nsse, np, horas) values (453453453, 1, 20.0);
+insert into trabaja_en(nsse, np, horas) values (453453453, 2, 20.0);
+insert into trabaja_en(nsse, np, horas) values (333445555, 2, 10.0);
+insert into trabaja_en(nsse, np, horas) values (333445555, 3, 10.0);
+insert into trabaja_en(nsse, np, horas) values (333445555, 10, 10.0);
+insert into trabaja_en(nsse, np, horas) values (333445555, 20, 10.0);
+insert into trabaja_en(nsse, np, horas) values (999887777, 30, 30.0);
+insert into trabaja_en(nsse, np, horas) values (999887777, 10, 10.0);
+insert into trabaja_en(nsse, np, horas) values (987987987, 10, 35.0);
+insert into trabaja_en(nsse, np, horas) values (987987987, 30, 5.0);
+insert into trabaja_en(nsse, np, horas) values (987654321, 30, 20.0);
+insert into trabaja_en(nsse, np, horas) values (987654321, 20, 15.0);
+insert into trabaja_en(nsse, np, horas) values (888665555, 20, null);
+    
+insert into dependiente(nsse, nombre_dependiente, sexo, fecha_ncto, parentesco) values (333445555, 'Alice', 'M' , to_date('1986-04-05','yyyy-mm-dd'), 'HIJA');
+insert into dependiente(nsse, nombre_dependiente, sexo, fecha_ncto, parentesco) values (333445555, 'Theodore', 'H' , to_date('1983-10-25','yyyy-mm-dd'), 'HIJO');
+insert into dependiente(nsse, nombre_dependiente, sexo, fecha_ncto, parentesco) values (333445555, 'Joy', 'M' , to_date('1958-05-03','yyyy-mm-dd'), 'ESPOSA');
+insert into dependiente(nsse, nombre_dependiente, sexo, fecha_ncto, parentesco) values (987654321, 'Abner', 'H' , to_date('1942-02-28','yyyy-mm-dd'), 'ESPOSA');
+insert into dependiente(nsse, nombre_dependiente, sexo, fecha_ncto, parentesco) values (123456789, 'Michael', 'H' , to_date('1988-01-04','yyyy-mm-dd'), 'HIJO');
+insert into dependiente(nsse, nombre_dependiente, sexo, fecha_ncto, parentesco) values (123456789, 'Alice', 'M' , to_date('1988-12-30','yyyy-mm-dd'), 'HIJA');
+insert into dependiente(nsse, nombre_dependiente, sexo, fecha_ncto, parentesco) values (123456789, 'Elizabeth', 'M' , to_date('1967-05-05','yyyy-mm-dd'), 'ESPOSA');
+    
+alter table empleado
+	add foreign key(nss_superv) references empleado(nss) on delete cascade;
+    
+alter table empleado
+	add foreign key(nd) references departamento(numerod) on delete cascade;
+
+alter table departamento
+	add foreign key(nss_jefe) references empleado(nss) on delete cascade;
+
+alter table localizaciones_dept
+	add foreign key(numerod) references departamento(numerod) on delete cascade;
+    
+alter table proyecto
+	add foreign key(nd) references departamento(numerod) on delete cascade;
+    
+alter table trabaja_en
+	add foreign key(nsse) references empleado(nss) on delete cascade;
+
+alter table trabaja_en
+	add foreign key(np) references proyecto(numerop) on delete cascade;
+
+alter table dependiente
+	add foreign key(nsse) references empleado(nss) on delete cascade;

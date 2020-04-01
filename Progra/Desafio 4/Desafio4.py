@@ -1,0 +1,122 @@
+def catalogacion(paciente):
+    if(paciente[0] < 40 or paciente[0] > 180 or paciente[1] < 30 or paciente[1] > 150 or paciente[2] >= 42):
+        return 'critico'
+    elif(paciente[0] < 60 or paciente[0] > 150 or paciente[1] < 50 or paciente[1] > 120 or paciente[2] >= 40.5 
+    or paciente[3] < 15 or paciente[3] > 20):
+        return 'grave'
+    elif(paciente[0] < 90 or paciente[0] > 120 or paciente[1] < 60 or paciente[1] > 90 or paciente[2] >= 37.3):
+        return 'leve'
+    elif(paciente[0] >= 90 and paciente[0] <= 120 or paciente[1] >= 60 and paciente[1] <= 90 or paciente[2] >= 36.6 and paciente[2] <= 37.2 or 
+    paciente[3] >= 15 and paciente[3] <= 20):
+        return 'estable'
+    
+def sistolica(presion_compuesta):
+    listaPresion = presion_compuesta.split("/") 
+    return int(listaPresion[0])
+
+def rango(horas):
+    contadores = [0,0,0,0,0,0,0,0,0,0,0,0]
+    rangos = ['rango 1 (00:00 a 02:00)','rango 2 (02:00 a 04:00)','rango 3 (04:00 a 06:00)','rango 4 (06:00 a 08:00)', 'rango 5 (08:00 a 10:00)', 
+            'rango 6 (10:00 a 12:00)', 'rango 7 (12:00 a 14:00)', 'rango 8 (14:00 a 16:00)', 'rango 9 (16:00 a 18:00)','rango 10 (18:00 a 20:00)',
+            'rango 11 (20:00 a 22:00)', 'rango 12 (22:00 a 23:59)']
+    
+    for i in horas:
+        if(i >= 0 and i < 2):
+            contadores[0] += 1
+        elif(i >= 2 and i < 4):
+            contadores[1] += 1
+        elif(i >= 4 and i < 6):
+            contadores[2] += 1
+        elif(i >= 6 and i < 8):
+            contadores[3] += 1
+        elif(i >= 8 and i < 10):
+            contadores[4] += 1
+        elif(i >= 10 and i < 12):
+            contadores[5] += 1
+        elif(i >= 12 and i < 14):
+            contadores[6] += 1
+        elif(i >= 14 and i < 16):
+            contadores[7] += 1
+        elif(i >= 16 and i < 18):
+            contadores[8] += 1
+        elif(i >= 18 and i < 20):
+            contadores[9] += 1
+        elif(i >= 20 and i < 22):
+            contadores[10] += 1
+        elif(i >= 22 and i < 24):
+            contadores[11] += 1
+
+    maximo = ''
+    contMax = -9999
+
+    for i in range (0, 12):
+        if(contadores[i] > contMax):
+            contMax = contadores[i]
+            maximo = rangos[i]
+
+    return maximo, contMax
+
+critico = []
+grave = []
+leve = []
+estable = []
+
+horas = []
+horasAn = []
+
+contTotal = 0
+contIn = 0
+contPunta = 0
+
+pac = open('pacientes2.txt', 'r')
+linea = pac.readline().strip()
+while(linea != ""):
+    linea2 = linea.split(";")
+    try:
+        presionSistolica = sistolica(linea2[3])
+        pulso = int(linea2[2])
+        cat = catalogacion([presionSistolica, pulso ,float(linea2[4].replace(',','.')), int(linea2[5])])
+        
+        hora = float(linea2[0].replace(',','.'))
+        horas.append(hora)
+
+        if(pulso < 60 or pulso > 90):
+            horasAn.append(hora)
+
+        if(hora >= 20.0 or hora <= 8.0):
+            contIn += 1
+
+        if(cat == 'critico'):
+            critico.append(linea2[1])
+        elif(cat == 'grave'):
+            grave.append(linea2[1])
+        elif(cat == 'leve'):
+            leve.append(linea2[1])
+        else:
+            if(hora >= 18.0 and hora <= 21.0):
+                contPunta += 1
+            estable.append(linea2[1])
+
+        contTotal += 1
+        linea = pac.readline().strip()
+    except:
+        linea = pac.readline().strip()
+
+print('\n')
+print(contIn, 'personas llegaron en un horario inhabil!\n')
+
+porcCriticos = round((len(critico) * 100)/contTotal, 2)
+print(porcCriticos, '% de los pacientes son criticos\n')
+
+porcGraves = round((len(grave) * 100)/contTotal, 2)
+print(porcGraves, '% de los pacientes son graves\n')
+
+print(contPunta, 'personas que estan estables llegaron en horario punta\n')
+
+maximo, contMax = rango(horas)
+
+print('El rango mas concurrido fue el', maximo, 'con un total de', contMax, 'pacientes\n')
+
+maximoAn, contAn = rango(horasAn)
+
+print('El rango mas concurrido con pacientes de pulso anormal (critico y grave) fue el', maximoAn, 'con un total de', contAn, 'pacientes')
